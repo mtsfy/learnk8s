@@ -34,16 +34,18 @@ app.get("/ready", (req, res) => {
   if (fail_readiness) {
     return res.sendStatus(503);
   }
+  return res.send("ok");
+});
 
-  return res.status(200).send("ok");
+app.get("/up", (req, res) => {
+  return res.send("ok");
 });
 
 app.get("/health", (req, res) => {
   if (fail_liveness) {
     return res.sendStatus(503);
   }
-
-  return res.status(200).send("ok");
+  return res.send("ok");
 });
 
 if (delay_startup) {
