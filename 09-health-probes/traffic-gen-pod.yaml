@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: traffic-gen-pod
+  labels:
+    app: traffic-gen-pod
+spec:
+  containers:
+    - name: traffic-gen-pod
+      image: mtsfy/traffic-generator:1.0.0
+      args:
+        - 'color-api-svc/api?format=json'
+        - '.5'
+      resources:
+        limits:
+          cpu: '500m'
+          memory: '512Mi'
