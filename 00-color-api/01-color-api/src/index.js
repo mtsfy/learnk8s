@@ -1,9 +1,26 @@
 const express = require("express");
 const os = require("os");
+const fs = require("fs");
+const path = require("path");
+
+const getColor = () => {
+  let color = process.env.DEFAULT_COLOR;
+  const filePath = process.env.COLOR_CONFIG_PATH;
+  if (filePath) {
+    try {
+      const colorFromFile = fs.readFileSync(path.resolve(filePath), "utf-8");
+      color = colorFromFile.trim();
+    } catch (error) {
+      console.error(`Failed to read contents of ${filePath}`);
+      console.error(error);
+    }
+  }
+  return color || "red";
+};
 
 const app = express();
 const port = 80;
-const color = "red";
+const color = getColor();
 const hostname = os.hostname();
 
 const delay_startup = process.env.DELAY_STARTUP === "true";
