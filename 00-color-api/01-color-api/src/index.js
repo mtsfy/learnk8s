@@ -32,7 +32,7 @@ console.log(`Fail liveness : ${fail_liveness}`);
 console.log(`Fail readiness : ${fail_readiness}`);
 
 app.get("/", (req, res) => {
-  res.send(`<h1 style="color${color};">hello from color-api!</h1><h2>hostname: ${hostname}</h2>`);
+  res.send(`<h1 style="color:${color};">hello from color-api!</h1><h2>hostname: ${hostname}</h2>`);
 });
 
 app.get("/api", (req, res) => {
