@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+namespace: dev
+
+namePrefix: dev-
+nameSuffix: -alpha
+
+commonLabels:
+  env: dev
+  tier: backend
+
+commonAnnotations:
+  maintainer: "team@company.org"
+  repository: "git-repo"
+
+images:
+  - name: nginx
+    newTag: "1.27.1"
+
+replicas:
+  - name: nginx 
+    count: 2
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: feature-flag-config
+    literals:
+      - use_db=true
+      - expose_metrics=true 
+  - name: db-init-config
+    files:
+      - db-init.js
+
+secretGenerator:
+  - name: local-config
+    envs:
+      - .env.local
+    type: Opaque
+
+patches:
+  - path: use-latest-tag.patch.yaml
+  - path: mount-db-init.patch.yaml
+  - path: remove-resources.patch.json
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
